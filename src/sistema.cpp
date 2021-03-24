@@ -5,13 +5,29 @@
 
 using namespace std;
 
-/* COMANDOS */
+Sistema::Sistema() {
+  this->usuarioLogadoId = 0; // se 0: não logado, caso contrário guarda o id do usuário logado
+  this->nomeServidorConectado = "";
+  this->nomeCanalConectado = "";
+}
+
+Sistema::~Sistema() {}
+
 string Sistema::quit() {
   return "Saindo...";
 }
 
 string Sistema::create_user (const string email, const string senha, const string nome) {
-  return "create_user NÃO IMPLEMENTADO";
+  if (usuarioLogadoId) return "Não foi possível realizar o cadastro.\nO usuário " + usuarios[usuarioLogadoId - 1].getEmail() + " encontra-se logado!";
+
+  for (int i = 0; i < usuarios.size(); i++) {
+    if (usuarios[i].getEmail() == email) return "Usuário já existe.";
+  }
+
+  Usuario newUsuario((int)(usuarios.size() + 1), email, senha, nome);
+  usuarios.push_back(newUsuario);
+
+  return "Usuário criado!";
 }
 
 string Sistema::login(const string email, const string senha) {
