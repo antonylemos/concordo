@@ -1,6 +1,6 @@
-#ifndef EXECUTOR_H
-#define EXECUTOR_H
-#include "sistema.h"
+#ifndef EXECUTOR_HPP
+#define EXECUTOR_HPP
+#include "sistema.hpp"
 #include <istream>
 #include <ostream>
 #include <sstream>

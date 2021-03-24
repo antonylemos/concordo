@@ -1,5 +1,5 @@
-#ifndef SISTEMA_H
-#define SISTEMA_H
+#ifndef SISTEMA_HPP
+#define SISTEMA_HPP
 #include <vector>
 #include <string>
 #include <iostream>

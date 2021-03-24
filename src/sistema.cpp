@@ -1,4 +1,4 @@
-#include "sistema.h"
+#include "../include/sistema.hpp"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
