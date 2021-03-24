@@ -31,8 +31,21 @@ string Sistema::create_user (const string email, const string senha, const strin
 }
 
 string Sistema::login(const string email, const string senha) {
+  if (!usuarioLogadoId) {
+    for (int i = 0; i < usuarios.size(); i++) {
+      if (usuarios[i].getEmail() == email) {
+        if (usuarios[i].getSenha() == senha) {
+          usuarioLogadoId = usuarios[i].getId();
 
-  return "login NÃO IMPLEMENTADO";
+          return "Login realizado como " + usuarios[i].getEmail() + "!";
+        }
+      }
+
+      return "Email ou senha incorretos. Verifique e tente novamente!";
+    }
+  }
+
+  return "Não foi possível realizar o login.\nO usuário " + usuarios[usuarioLogadoId - 1].getEmail() + " encontra-se logado!";
 }
 
 string Sistema::disconnect() {
