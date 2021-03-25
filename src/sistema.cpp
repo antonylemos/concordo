@@ -49,7 +49,12 @@ string Sistema::login(const string email, const string senha) {
 }
 
 string Sistema::disconnect() {
-  return "disconnect NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  int usuarioLogadoIdAnterior = usuarioLogadoId;
+  usuarioLogadoId = 0;
+
+  return "Desconectando usuário " + usuarios[usuarioLogadoIdAnterior - 1].getEmail() + ".";
 }
 
 string Sistema::create_server(const string nome) {
