@@ -99,11 +99,31 @@ string Sistema::set_server_desc(const string nome, const string descricao) {
 }
 
 string Sistema::set_server_invite_code(const string nome, const string codigo) {
-  return "set_server_invite_code NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  Servidor findServidor;
+  bool isServidor = false;
+
+  for (int i = 0; i < servidores.size(); i++) {
+    if (servidores[i].getNome() == nome) {
+      findServidor = servidores[i];
+      isServidor = true;
+    };
+  }
+
+  if (!isServidor) return "Servidor \'" + nome + "\' não existe.";
+
+  if (findServidor.getUsuarioDonoId() != usuarioLogadoId)
+    return "Você não pode alterar o código de convite de um servidor que não foi criado por você.";
+
+  findServidor.setCodigoConvite(codigo);
+
+  if (!codigo.empty()) return "Código de convite do servidor \'" + nome + "\' modificado.";
+  else return "Código de convite do servidor \'" + nome + "\' removido.";
 }
 
 string Sistema::list_servers() {
-  return "list_servers NÃO IMPLEMENTADO";
+
 }
 
 string Sistema::remove_server(const string nome) {

@@ -37,6 +37,14 @@ void Servidor::setDescricao(string const descricao) {
   this->descricao = descricao;
 }
 
+string Servidor::getCodigoConvite() const {
+  return codigoConvite;
+}
+
+void Servidor::setCodigoConvite(string const codigoConvite) {
+  this->codigoConvite = codigoConvite;
+}
+
 bool Servidor::pushParticipante(int const participanteId) {
   for (int i = 0; i < participantesIds.size(); i++) {
     if (participantesIds[i] == participanteId) return false;

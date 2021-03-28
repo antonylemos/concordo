@@ -27,6 +27,9 @@ class Servidor {
     string getDescricao() const;
     void setDescricao(string const descricao);
 
+    string getCodigoConvite() const;
+    void setCodigoConvite(string const codigoConvite);
+
     bool pushParticipante(int const participanteId);
 };
 
