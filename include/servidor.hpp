@@ -6,6 +6,7 @@
 using namespace std;
 
 class Servidor {
+  // Atributos da classe
   private:
     int usuarioDonoId;
     string nome;
@@ -13,6 +14,7 @@ class Servidor {
     string codigoConvite;
     vector <int> participantesIds;
 
+  // Métodos da classe
   public:
     Servidor();
     Servidor(int usuarioDonoId, string nome);

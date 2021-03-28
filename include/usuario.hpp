@@ -5,12 +5,14 @@
 using namespace std;
 
 class Usuario {
+  // Atributos da classe
   private:
     int id;
     string email;
     string senha;
     string nome;
 
+  // Métodos da classe
   public:
     Usuario();
     Usuario(int id, string nome, string email, string senha);

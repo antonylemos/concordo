@@ -14,7 +14,7 @@ class Sistema {
   private:
     vector <Servidor> servidores;
     vector <Usuario> usuarios;
-    int usuarioLogadoId; // se 0: não logado, caso contrário guarda o id do usuário logado
+    int usuarioLogadoId;
     string nomeServidorConectado;
     string nomeCanalConectado;
 
