@@ -45,6 +45,10 @@ void Servidor::setCodigoConvite(string const codigoConvite) {
   this->codigoConvite = codigoConvite;
 }
 
+vector<int> Servidor::getParticipantesIds(){
+    return participantesIds;
+}
+
 bool Servidor::pushParticipante(int const participanteId) {
   for (int i = 0; i < participantesIds.size(); i++) {
     if (participantesIds[i] == participanteId) return false;

@@ -199,7 +199,28 @@ string Sistema::leave_server() {
 }
 
 string Sistema::list_participants() {
-  return "list_participants NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  Servidor findServidor;
+  bool isServidor = false;
+
+  for (int i = 0; i < servidores.size(); i++) {
+    if (servidores[i].getNome() == nomeServidorConectado) {
+      findServidor = servidores[i];
+      isServidor = true;
+    };
+  }
+
+  string listaParticipantes = "";
+  vector<int> listaIds = findServidor.getParticipantesIds();
+
+  for (int i = 0; i < usuarios.size(); i++) {
+    for (int j = 0; j < listaIds.size(); j++) {
+      if (usuarios[i].getId() == listaIds[j]) listaParticipantes += usuarios[i].getNome() + "\n";
+    }
+  }
+
+  return listaParticipantes;
 }
 
 string Sistema::list_channels() {
