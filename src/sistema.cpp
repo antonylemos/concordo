@@ -123,7 +123,17 @@ string Sistema::set_server_invite_code(const string nome, const string codigo) {
 }
 
 string Sistema::list_servers() {
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
+  if (servidores.empty()) return "Não há servidores cadastrados.";
+
+  string listaServidores = "";
+
+  for (int i = 0; i < servidores.size(); i++) {
+    listaServidores += servidores[i].getNome() + "\n";
+  }
+
+  return listaServidores;
 }
 
 string Sistema::remove_server(const string nome) {
