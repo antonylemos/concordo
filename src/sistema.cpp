@@ -1,7 +1,8 @@
-#include "../include/sistema.hpp"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+
+#include "../include/sistema.hpp"
 
 using namespace std;
 
@@ -58,11 +59,43 @@ string Sistema::disconnect() {
 }
 
 string Sistema::create_server(const string nome) {
-  return "create_server NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  if (nome.empty()) return "Não é possível criar um servidor sem nome.";
+
+  for (int i = 0; i < servidores.size(); i++) {
+    if (servidores[i].getNome() == nome) return "Servidor com esse nome já existe.";
+  }
+
+  Servidor newServidor(usuarioLogadoId, nome);
+
+  newServidor.pushParticipante(usuarioLogadoId);
+  servidores.push_back(newServidor);
+
+  return "Servidor criado.";
 }
 
 string Sistema::set_server_desc(const string nome, const string descricao) {
-  return "set_server_desc NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  Servidor findServidor;
+  bool isServidor = false;
+
+  for (int i = 0; i < servidores.size(); i++) {
+    if (servidores[i].getNome() == nome) {
+      findServidor = servidores[i];
+      isServidor = true;
+    };
+  }
+
+  if (!isServidor) return "Servidor \'" + nome + "\' não existe.";
+
+  if (findServidor.getUsuarioDonoId() != usuarioLogadoId)
+    return "Você não pode alterar a descrição de um servidor que não foi criado por você.";
+
+  findServidor.setDescricao(descricao);
+
+  return "Descrição do servidor \'" + nome + "\' modificada.";
 }
 
 string Sistema::set_server_invite_code(const string nome, const string codigo) {
