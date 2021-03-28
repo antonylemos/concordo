@@ -1,8 +1,6 @@
-# Base para a atividade 03 de LP1
+# Concordo - Discord Clone
 
-Use esse esqueleto de classes para iniciar a terceira atividade.
-
-Existe um executor que faz a interpretação dos comandos e executa o método correto do sistema.
+Projeto desenvolvido na disciplina de Linguagem de Programação I do curso de Tecnologia da Informação da UFRN.
 
 ## Para compilar
 
