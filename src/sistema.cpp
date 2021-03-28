@@ -158,7 +158,34 @@ string Sistema::remove_server(const string nome) {
 }
 
 string Sistema::enter_server(const string nome, const string codigo) {
-  return "enter_server NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  Servidor findServidor;
+  bool isServidor = false;
+
+  for (int i = 0; i < servidores.size(); i++) {
+    if (servidores[i].getNome() == nome) {
+      findServidor = servidores[i];
+      isServidor = true;
+    };
+  }
+
+  if (!isServidor) return "Servidor \'" + nome + "\' não existe.";
+
+  if (findServidor.getUsuarioDonoId() == usuarioLogadoId) {
+    findServidor.pushParticipante(usuarioLogadoId);
+    return "Entrou no servidor com sucesso.";
+  } else if (findServidor.getCodigoConvite().empty()) {
+    findServidor.pushParticipante(usuarioLogadoId);
+    return "Entrou no servidor com sucesso.";
+  } else if (findServidor.getCodigoConvite() == codigo) {
+    findServidor.pushParticipante(usuarioLogadoId);
+    return "Entrou no servidor com sucesso.";
+  } else if (!findServidor.getCodigoConvite().empty() && codigo.empty()) {
+    return "Servidor requer código de convite";
+  } else {
+    return "Código de convite incorreto";
+  }
 }
 
 string Sistema::leave_server() {

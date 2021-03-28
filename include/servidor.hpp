@@ -30,6 +30,8 @@ class Servidor {
     string getCodigoConvite() const;
     void setCodigoConvite(string const codigoConvite);
 
+    vector<int> getParticipantesIds();
+
     bool pushParticipante(int const participanteId);
 };
 
