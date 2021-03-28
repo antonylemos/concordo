@@ -137,7 +137,24 @@ string Sistema::list_servers() {
 }
 
 string Sistema::remove_server(const string nome) {
-  return "remove_server NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  vector<Servidor>::iterator findServidor;
+
+  findServidor = find_if(servidores.begin(), servidores.end(), [nome](Servidor servidor){
+    return servidor.getNome() == nome;
+  });
+
+  if (findServidor == servidores.end()) return "Servidor \'" + nome + "\' não encontrado.";
+
+  if (findServidor->getUsuarioDonoId() != usuarioLogadoId)
+    return "Você não é o dono do servidor \'" + nome + "\'.";
+
+  if(findServidor->getNome() == nomeServidorConectado) leave_server();
+
+  servidores.erase(findServidor);
+
+  return "Servidor \'" + nome + "\' removido.";
 }
 
 string Sistema::enter_server(const string nome, const string codigo) {
@@ -145,7 +162,13 @@ string Sistema::enter_server(const string nome, const string codigo) {
 }
 
 string Sistema::leave_server() {
-  return "leave_server NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  if (nomeServidorConectado.empty()) return "O usuário não está conectado a nenhum servidor.";
+
+  nomeServidorConectado = "";
+
+  return "Saindo do servidor \'" + nomeServidorConectado + "\'.";
 }
 
 string Sistema::list_participants() {
