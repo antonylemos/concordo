@@ -34,16 +34,15 @@ string Sistema::create_user (const string email, const string senha, const strin
 string Sistema::login(const string email, const string senha) {
   if (!usuarioLogadoId) {
     for (int i = 0; i < usuarios.size(); i++) {
-      if (usuarios[i].getEmail() == email) {
-        if (usuarios[i].getSenha() == senha) {
-          usuarioLogadoId = usuarios[i].getId();
+      cout << usuarios[i].getEmail() << " - " << usuarios[i].getSenha() << endl;
+      if (usuarios[i].getEmail() == email && usuarios[i].getSenha() == senha) {
+        usuarioLogadoId = usuarios[i].getId();
 
-          return "Login realizado como " + usuarios[i].getEmail() + "!";
-        }
+        return "Login realizado como " + usuarios[i].getEmail() + "!";
       }
-
-      return "Email ou senha incorretos. Verifique e tente novamente!";
     }
+
+    return "Email ou senha incorretos. Verifique e tente novamente!";
   }
 
   return "Não foi possível realizar o login.\nO usuário " + usuarios[usuarioLogadoId - 1].getEmail() + " encontra-se logado!";
@@ -198,6 +197,7 @@ string Sistema::leave_server() {
   return "Saindo do servidor \'" + nomeServidorConectado + "\'.";
 }
 
+// TODO: Corrigir método
 string Sistema::list_participants() {
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
