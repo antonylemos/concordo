@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <time.h>
 
 #include "../include/sistema.hpp"
 
@@ -368,11 +369,55 @@ string Sistema::leave_channel() {
 }
 
 string Sistema::send_message(const string mensagem) {
-  return "send_message NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
+
+  if (nomeCanalConectado.empty()) return "O usuário não está conectado a um canal no momento.";
+
+  if (mensagem.empty()) return "Não é possível enviar uma mensagem vazia.";
+
+  string nomeServidor = nomeServidorConectado;
+
+  auto findServidor = find_if(servidores.begin(), servidores.end(), [nomeServidor](Servidor servidor) {
+    return servidor.getNome() == nomeServidor;
+  });
+
+  char dataHora[100];
+  time_t current = time(nullptr);
+
+  strftime(dataHora, 50, "%d/%m/%Y - %R", localtime(&current));
+
+  Mensagem newMensagem(dataHora, mensagem, usuarioLogadoId);
+
+  findServidor->sendMensagem(nomeCanalConectado, newMensagem);
+
+  return "Mensagem enviada.";
 }
 
 string Sistema::list_messages() {
-  return "list_messages NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
+
+  if (nomeCanalConectado.empty()) return "O usuário não está conectado a um canal no momento.";
+
+  string nomeServidor = nomeServidorConectado;
+
+  auto findServidor = find_if(servidores.begin(), servidores.end(), [nomeServidor](Servidor servidor) {
+    return servidor.getNome() == nomeServidor;
+  });
+
+  vector<Mensagem> listaMensagens = findServidor->getMensagens(nomeCanalConectado);
+
+  if (listaMensagens.empty()) return "Não há mensagens no momento.";
+
+  string mensagens;
+
+  for(auto itMensagem = listaMensagens.begin(); itMensagem != listaMensagens.end(); itMensagem++)
+    mensagens += usuarios[itMensagem->getEnviadaPor() - 1].getNome() + " <" + itMensagem->getDataHora() + ">: " + itMensagem->getConteudo() + "\n";
+
+  return mensagens;
 }
 
 

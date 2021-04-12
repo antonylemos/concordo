@@ -14,7 +14,10 @@ class CanalVoz : public Canal {
 
   public:
     CanalVoz();
-    CanalVoz(string const nome) : Canal(nome) {};
+    CanalVoz(string const nome);
+
+    vector<Mensagem> getMensagens() const;
+    virtual void sendMensagem(const Mensagem mensagem);
 };
 
 #endif

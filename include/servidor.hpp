@@ -46,6 +46,9 @@ class Servidor {
     bool createCanal(shared_ptr <Canal> canal);
 
     bool pushParticipante(int const participanteId);
+
+    vector<Mensagem> getMensagens(const string nomeCanal);
+    void sendMensagem(const string nomeCanal, const Mensagem mensagem);
 };
 
 #endif

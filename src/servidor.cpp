@@ -1,8 +1,10 @@
 #include <string>
 #include <memory>
+#include <algorithm>
 
 #include "../include/servidor.hpp"
 #include "../include/canal.hpp"
+#include "../include/mensagem.hpp"
 
 using namespace std;
 
@@ -100,4 +102,20 @@ bool Servidor::pushParticipante(int const participanteId) {
   participantesIds.push_back(participanteId);
 
   return true;
+}
+
+vector<Mensagem> Servidor::getMensagens(const string nomeCanal) {
+  auto findCanal = find_if(canais.begin(), canais.end(), [nomeCanal](std::shared_ptr <Canal> canal) {
+    return canal->getNome() == nomeCanal;
+  });
+
+  return (*findCanal)->getMensagens();
+}
+
+void Servidor::sendMensagem(const string nomeCanal, const Mensagem mensagem) {
+  auto findCanal = find_if(canais.begin(), canais.end(), [nomeCanal](std::shared_ptr <Canal> canal) {
+    return canal->getNome() == nomeCanal;
+  });
+
+  (*findCanal)->sendMensagem(mensagem);
 }
