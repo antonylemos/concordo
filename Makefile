@@ -15,13 +15,19 @@ mensagem.o: src/mensagem.cpp include/mensagem.hpp
 canal.o: src/canal.cpp include/canal.hpp
 	g++ src/canal.cpp -c
 
-servidor.o: src/servidor.cpp mensagem.o canal.o include/servidor.hpp include/canal.hpp include/canalTexto.hpp include/canalVoz.hpp
+canalTexto.o: src/canalTexto.cpp canal.o
+	g++ src/canalTexto.cpp -c
+
+canalVoz.o: src/canalVoz.cpp canal.o
+	g++ src/canalVoz.cpp -c
+
+servidor.o: src/servidor.cpp mensagem.o canal.o canalTexto.o canalVoz.o include/servidor.hpp include/canal.hpp include/canalTexto.hpp include/canalVoz.hpp
 	g++ src/servidor.cpp -c
 
-objects: sistema.o executor.o usuario.o mensagem.o canal.o servidor.o
+objects: sistema.o executor.o usuario.o mensagem.o canal.o canalTexto.o canalVoz.o servidor.o
 
 concordo: objects src/concordo.cpp
-	g++ -Wall -fsanitize=address sistema.o executor.o usuario.o mensagem.o canal.o servidor.o src/concordo.cpp -o concordo
+	g++ -Wall -fsanitize=address sistema.o executor.o usuario.o mensagem.o canal.o canalTexto.o canalVoz.o servidor.o src/concordo.cpp -o concordo
 
 clean:
 	rm *.o concordo
