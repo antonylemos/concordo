@@ -196,9 +196,11 @@ string Sistema::leave_server() {
 
   if (nomeServidorConectado.empty()) return "O usuário não está conectado a nenhum servidor.";
 
+  string nomeServidor = nomeServidorConectado;
+
   nomeServidorConectado = "";
 
-  return "Saindo do servidor \'" + nomeServidorConectado + "\'.";
+  return "Saindo do servidor \'" + nomeServidor + "\'.";
 }
 
 string Sistema::list_participants() {
@@ -320,7 +322,17 @@ string Sistema::enter_channel(const string nome) {
 }
 
 string Sistema::leave_channel() {
-  return "leave_channel NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
+
+  if (nomeCanalConectado.empty()) return "O usuário não está conectado a um canal no momento.";
+
+  string nomeCanal = nomeCanalConectado;
+
+  nomeCanalConectado = "";
+
+  return "Saindo do servidor \'" + nomeCanal + "\'.";
 }
 
 string Sistema::send_message(const string mensagem) {
