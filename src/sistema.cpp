@@ -235,12 +235,12 @@ string Sistema::list_channels() {
 
   string nomeServidor = nomeServidorConectado;
 
-  auto itServidor = find_if(servidores.begin(), servidores.end(), [nomeServidor](Servidor servidor) {
+  auto findServidor = find_if(servidores.begin(), servidores.end(), [nomeServidor](Servidor servidor) {
     return servidor.getNome() == nomeServidor;
   });
 
-  vector<string> canaisTexto = itServidor->getCanaisTexto();
-  vector<string> canaisVoz = itServidor->getCanaisVoz();
+  vector<string> canaisTexto = findServidor->getCanaisTexto();
+  vector<string> canaisVoz = findServidor->getCanaisVoz();
 
   if (canaisTexto.empty() && canaisVoz.empty()) return "Nenhum canal no servidor foi encontrado.";
 
@@ -249,16 +249,16 @@ string Sistema::list_channels() {
   if (!canaisTexto.empty()) {
     canais += "#canais de texto\n";
 
-    for (auto itNome = canaisTexto.begin(); itNome != canaisTexto.end(); itNome++) {
-      if (itNome != canaisTexto.end()) canais += *itNome + "\n";
+    for (auto findNome = canaisTexto.begin(); findNome != canaisTexto.end(); findNome++) {
+      if (findNome != canaisTexto.end()) canais += *findNome + "\n";
     }
   }
 
   if (!canaisVoz.empty()) {
     canais += "#canais de voz\n";
 
-    for (auto itNome = canaisVoz.begin(); itNome != canaisVoz.end(); itNome++) {
-      if (itNome != canaisVoz.end()) canais += *itNome + "\n";
+    for (auto findNome = canaisVoz.begin(); findNome != canaisVoz.end(); findNome++) {
+      if (findNome != canaisVoz.end()) canais += *findNome + "\n";
     }
   }
 
@@ -266,7 +266,53 @@ string Sistema::list_channels() {
 }
 
 string Sistema::create_channel(const string nome, const string tipo) {
-  return "create_channel NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
+
+  if (nome.empty()) return "Não é possível criar um canal sem nome.";
+
+  if (tipo != "texto" && tipo != "voz") return "Tipo inválido.";
+
+  string nomeServidor = nomeCanalConectado;
+
+  auto findServidor = std::find_if(servidores.begin(), servidores.end(), [nomeServidor](Servidor servidor) {
+    return servidor.getNome() == nomeServidor;
+  });
+
+  if (tipo == "texto") {
+    vector<string> canaisTexto = findServidor->getCanaisTexto();
+
+    auto findNome = find_if(canaisTexto.begin(), canaisTexto.end(), [nome](string nomeCanal) {
+      return nomeCanal == nome;
+    });
+
+    if (findNome != canaisTexto.end()) return "Canal de texto \'" + nome + "\' já existe.";
+
+    shared_ptr <CanalTexto> newCanal(new CanalTexto(nome));
+
+    bool canalCriado = findServidor->createCanal(newCanal);
+
+    if (canalCriado) return "Canal de texto \'" + nome + "\' criado.";
+
+    return "Erro ao criar canal de texto.";
+  } else {
+    vector<string> canaisVoz = findServidor->getCanaisVoz();
+
+    auto findNome = find_if(canaisVoz.begin(), canaisVoz.end(), [nome](string nomeCanal) {
+      return nomeCanal == nome;
+    });
+
+    if (findNome != canaisVoz.end()) return "Canal de voz \'" + nome + "\' já existe.";
+
+    shared_ptr <CanalVoz> newCanal(new CanalVoz(nome));
+
+    bool canalCriado = findServidor->createCanal(newCanal);
+
+    if (canalCriado) return "Canal de voz \'" + nome + "\' criado.";
+
+    return "Erro ao criar canal de voz.";
+  }
 }
 
 string Sistema::enter_channel(const string nome) {

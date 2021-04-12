@@ -43,6 +43,8 @@ class Servidor {
     vector<string> getCanaisTexto() const;
     vector<string> getCanaisVoz() const;
 
+    bool createCanal(shared_ptr <Canal> canal);
+
     bool pushParticipante(int const participanteId);
 };
 

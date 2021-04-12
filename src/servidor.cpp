@@ -83,6 +83,14 @@ vector<string> Servidor::getCanaisVoz() const {
   return listaCanais;
 }
 
+bool Servidor::createCanal(shared_ptr <Canal> canal) {
+  if (canal == nullptr) return false;
+
+  canais.push_back(canal);
+
+  return true;
+}
+
 // Insere um usuário na lista de participantes do servidor
 bool Servidor::pushParticipante(int const participanteId) {
   for (int i = 0; i < participantesIds.size(); i++) {
