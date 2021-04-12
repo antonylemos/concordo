@@ -1,5 +1,5 @@
-#ifndef CANAL_TEXTO_HPP
-#define CANAL_TEXTO_HPP
+#ifndef CANALTEXTO_HPP
+#define CANALTEXTO_HPP
 #include <string>
 #include <vector>
 

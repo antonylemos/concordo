@@ -5,8 +5,8 @@
 #include <memory>
 
 #include "canal.hpp"
-#include "canal_texto.hpp"
-#include "canal_voz.hpp"
+#include "canalTexto.hpp"
+#include "canalVoz.hpp"
 
 using namespace std;
 

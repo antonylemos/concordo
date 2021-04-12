@@ -15,7 +15,7 @@ mensagem.o: src/mensagem.cpp include/mensagem.hpp
 canal.o: src/canal.cpp include/canal.hpp
 	g++ src/canal.cpp -c
 
-servidor.o: src/servidor.cpp mensagem.o canal.o include/servidor.hpp include/canal.hpp include/canal_texto.hpp include/canal_voz.hpp
+servidor.o: src/servidor.cpp mensagem.o canal.o include/servidor.hpp include/canal.hpp include/canalTexto.hpp include/canalVoz.hpp
 	g++ src/servidor.cpp -c
 
 objects: sistema.o executor.o usuario.o mensagem.o canal.o servidor.o

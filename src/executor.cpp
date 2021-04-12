@@ -133,21 +133,22 @@ string Executor::processarLinha(string linha) {
   }
 
   else if (nomeComando == "enter-channel") {
-    string nome;
+    string nome, tipo;
     buf >> nome;
-    return sistema->enter_channel(nome);
+    buf >> tipo;
+    return sistema->enter_channel(nome, tipo);
   }
 
   else if (nomeComando == "leave-channel") {
     return sistema->leave_channel();
   }
-  
+
   else if (nomeComando == "send-message") {
     string mensagem;
     mensagem = restoDe(buf);
     return sistema->send_message(mensagem);
   }
-  
+
   else if (nomeComando == "list-messages") {
     return sistema->list_messages();
   }

@@ -1,5 +1,5 @@
-#ifndef CANAL_VOZ_HPP
-#define CANAL_VOZ_HPP
+#ifndef CANALVOZ_HPP
+#define CANALVOZ_HPP
 #include <string>
 #include <vector>
 
