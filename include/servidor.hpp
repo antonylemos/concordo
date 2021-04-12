@@ -2,6 +2,11 @@
 #define SERVIDOR_HPP
 #include <string>
 #include <vector>
+#include <memory>
+
+#include "canal.hpp"
+#include "canal_texto.hpp"
+#include "canal_voz.hpp"
 
 using namespace std;
 
@@ -13,6 +18,7 @@ class Servidor {
     string descricao;
     string codigoConvite;
     vector <int> participantesIds;
+    vector <shared_ptr <Canal>> canais;
 
   // Métodos da classe
   public:
@@ -33,6 +39,9 @@ class Servidor {
     void setCodigoConvite(string const codigoConvite);
 
     vector<int> getParticipantesIds();
+
+    vector<string> getCanaisTexto() const;
+    vector<string> getCanaisVoz() const;
 
     bool pushParticipante(int const participanteId);
 };

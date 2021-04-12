@@ -70,6 +70,8 @@ string Sistema::create_server(const string nome) {
   newServidor.pushParticipante(usuarioLogadoId);
   servidores.push_back(newServidor);
 
+  nomeServidorConectado = nome;
+
   return "Servidor criado.";
 }
 
@@ -172,12 +174,15 @@ string Sistema::enter_server(const string nome, const string codigo) {
 
   if (findServidor.getUsuarioDonoId() == usuarioLogadoId) {
     findServidor.pushParticipante(usuarioLogadoId);
+    nomeServidorConectado = nome;
     return "Entrou no servidor com sucesso.";
   } else if (findServidor.getCodigoConvite().empty()) {
     findServidor.pushParticipante(usuarioLogadoId);
+    nomeServidorConectado = nome;
     return "Entrou no servidor com sucesso.";
   } else if (findServidor.getCodigoConvite() == codigo) {
     findServidor.pushParticipante(usuarioLogadoId);
+    nomeServidorConectado = nome;
     return "Entrou no servidor com sucesso.";
   } else if (!findServidor.getCodigoConvite().empty() && codigo.empty()) {
     return "Servidor requer código de convite";
@@ -196,9 +201,10 @@ string Sistema::leave_server() {
   return "Saindo do servidor \'" + nomeServidorConectado + "\'.";
 }
 
-// TODO: Corrigir método
 string Sistema::list_participants() {
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  if (nomeServidorConectado.empty()) return "Não há um servidor conectado no momento.";
 
   Servidor findServidor;
   bool isServidor = false;
@@ -223,7 +229,40 @@ string Sistema::list_participants() {
 }
 
 string Sistema::list_channels() {
-  return "list_channels NÃO IMPLEMENTADO";
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
+
+  string nomeServidor = nomeServidorConectado;
+
+  auto itServidor = find_if(servidores.begin(), servidores.end(), [nomeServidor](Servidor servidor) {
+    return servidor.getNome() == nomeServidor;
+  });
+
+  vector<string> canaisTexto = itServidor->getCanaisTexto();
+  vector<string> canaisVoz = itServidor->getCanaisVoz();
+
+  if (canaisTexto.empty() && canaisVoz.empty()) return "Nenhum canal no servidor foi encontrado.";
+
+  string canais;
+
+  if (!canaisTexto.empty()) {
+    canais += "#canais de texto\n";
+
+    for (auto itNome = canaisTexto.begin(); itNome != canaisTexto.end(); itNome++) {
+      if (itNome != canaisTexto.end()) canais += *itNome + "\n";
+    }
+  }
+
+  if (!canaisVoz.empty()) {
+    canais += "#canais de voz\n";
+
+    for (auto itNome = canaisVoz.begin(); itNome != canaisVoz.end(); itNome++) {
+      if (itNome != canaisVoz.end()) canais += *itNome + "\n";
+    }
+  }
+
+  return canais;
 }
 
 string Sistema::create_channel(const string nome, const string tipo) {

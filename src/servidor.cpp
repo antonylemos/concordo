@@ -1,6 +1,8 @@
 #include <string>
+#include <memory>
 
 #include "../include/servidor.hpp"
+#include "../include/canal.hpp"
 
 using namespace std;
 
@@ -59,6 +61,26 @@ void Servidor::setCodigoConvite(string const codigoConvite) {
 // Retorna um vetor com os IDs dos participantes do servidor
 vector<int> Servidor::getParticipantesIds(){
     return participantesIds;
+}
+
+vector<string> Servidor::getCanaisTexto() const {
+  vector<string> listaCanais;
+
+  for (auto itCanal = canais.begin(); itCanal != canais.end(); itCanal++) {
+    if (dynamic_pointer_cast <CanalTexto> (*itCanal)) listaCanais.push_back((*itCanal)->getNome());
+  }
+
+  return listaCanais;
+}
+
+vector<string> Servidor::getCanaisVoz() const {
+  vector<string> listaCanais;
+
+  for (auto itCanal = canais.begin(); itCanal != canais.end(); itCanal++) {
+    if (dynamic_pointer_cast <CanalVoz> (*itCanal)) listaCanais.push_back((*itCanal)->getNome());
+  }
+
+  return listaCanais;
 }
 
 // Insere um usuário na lista de participantes do servidor

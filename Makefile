@@ -9,13 +9,19 @@ executor.o: src/executor.cpp include/executor.hpp sistema.o
 usuario.o: src/usuario.cpp include/usuario.hpp
 	g++ src/usuario.cpp -c
 
-servidor.o: src/servidor.cpp include/servidor.hpp
+mensagem.o: src/mensagem.cpp include/mensagem.hpp
+	g++ src/mensagem.cpp -c
+
+canal.o: src/canal.cpp include/canal.hpp
+	g++ src/canal.cpp -c
+
+servidor.o: src/servidor.cpp mensagem.o canal.o include/servidor.hpp include/canal.hpp include/canal_texto.hpp include/canal_voz.hpp
 	g++ src/servidor.cpp -c
 
-objects: sistema.o executor.o usuario.o servidor.o
+objects: sistema.o executor.o usuario.o mensagem.o canal.o servidor.o
 
 concordo: objects src/concordo.cpp
-	g++ -Wall -fsanitize=address sistema.o executor.o usuario.o servidor.o src/concordo.cpp -o concordo
+	g++ -Wall -fsanitize=address sistema.o executor.o usuario.o mensagem.o canal.o servidor.o src/concordo.cpp -o concordo
 
 clean:
 	rm *.o concordo
