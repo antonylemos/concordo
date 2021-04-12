@@ -251,16 +251,16 @@ string Sistema::list_channels() {
   if (!canaisTexto.empty()) {
     canais += "#canais de texto\n";
 
-    for (auto findNome = canaisTexto.begin(); findNome != canaisTexto.end(); findNome++) {
-      if (findNome != canaisTexto.end()) canais += *findNome + "\n";
+    for (auto findCanal = canaisTexto.begin(); findCanal != canaisTexto.end(); findCanal++) {
+      if (findCanal != canaisTexto.end()) canais += *findCanal + "\n";
     }
   }
 
   if (!canaisVoz.empty()) {
     canais += "#canais de voz\n";
 
-    for (auto findNome = canaisVoz.begin(); findNome != canaisVoz.end(); findNome++) {
-      if (findNome != canaisVoz.end()) canais += *findNome + "\n";
+    for (auto findCanal = canaisVoz.begin(); findCanal != canaisVoz.end(); findCanal++) {
+      if (findCanal != canaisVoz.end()) canais += *findCanal + "\n";
     }
   }
 
@@ -276,20 +276,20 @@ string Sistema::create_channel(const string nome, const string tipo) {
 
   if (tipo != "texto" && tipo != "voz") return "Tipo inválido.";
 
-  string nomeServidor = nomeCanalConectado;
+  string nomeServidor = nomeServidorConectado;
 
-  auto findServidor = std::find_if(servidores.begin(), servidores.end(), [nomeServidor](Servidor servidor) {
+  auto findServidor = find_if(servidores.begin(), servidores.end(), [nomeServidor](Servidor servidor) {
     return servidor.getNome() == nomeServidor;
   });
 
   if (tipo == "texto") {
     vector<string> canaisTexto = findServidor->getCanaisTexto();
 
-    auto findNome = find_if(canaisTexto.begin(), canaisTexto.end(), [nome](string nomeCanal) {
+    auto findCanal = find_if(canaisTexto.begin(), canaisTexto.end(), [nome](string nomeCanal) {
       return nomeCanal == nome;
     });
 
-    if (findNome != canaisTexto.end()) return "Canal de texto \'" + nome + "\' já existe.";
+    if (findCanal != canaisTexto.end()) return "Canal de texto \'" + nome + "\' já existe.";
 
     shared_ptr <CanalTexto> newCanal(new CanalTexto(nome));
 
@@ -301,11 +301,11 @@ string Sistema::create_channel(const string nome, const string tipo) {
   } else {
     vector<string> canaisVoz = findServidor->getCanaisVoz();
 
-    auto findNome = find_if(canaisVoz.begin(), canaisVoz.end(), [nome](string nomeCanal) {
+    auto findCanal = find_if(canaisVoz.begin(), canaisVoz.end(), [nome](string nomeCanal) {
       return nomeCanal == nome;
     });
 
-    if (findNome != canaisVoz.end()) return "Canal de voz \'" + nome + "\' já existe.";
+    if (findCanal != canaisVoz.end()) return "Canal de voz \'" + nome + "\' já existe.";
 
     shared_ptr <CanalVoz> newCanal(new CanalVoz(nome));
 
@@ -317,8 +317,40 @@ string Sistema::create_channel(const string nome, const string tipo) {
   }
 }
 
-string Sistema::enter_channel(const string nome) {
-  return "enter_channel NÃO IMPLEMENTADO";
+string Sistema::enter_channel(const string nome, const string tipo) {
+  if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
+
+  if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
+
+  if (nome.empty()) return "Não é possível entrar em um canal sem nome.";
+
+  if (tipo != "texto" && tipo != "voz") return "Tipo inválido.";
+
+  string nomeServidor = nomeServidorConectado;
+
+  auto findServidor = find_if(servidores.begin(), servidores.end(), [nomeServidor](Servidor servidor) {
+    return servidor.getNome() == nomeServidor;
+  });
+
+  vector<string> findCanaisTexto = findServidor->getCanaisTexto();
+  auto itCanalTexto = find_if(findCanaisTexto.begin(), findCanaisTexto.end(), [nome](std::string nomeCanal) {
+    return nomeCanal == nome;
+  });
+
+  vector<string> findCanaisVoz = findServidor->getCanaisVoz();
+  auto itCanalVoz = find_if(findCanaisVoz.begin(), findCanaisVoz.end(), [nome](std::string nomeCanal) {
+    return nomeCanal == nome;
+  });
+
+  if (itCanalTexto != findCanaisTexto.end() && itCanalVoz != findCanaisVoz.end()) {
+    nomeCanalConectado = nome;
+
+    return "Entrou no canal de " + tipo + " \'" + nome + "\'.";
+  } else {
+    nomeCanalConectado = nome;
+
+    return "Entrou no canal \'" + nome + "\'.";
+  }
 }
 
 string Sistema::leave_channel() {

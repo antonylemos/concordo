@@ -36,7 +36,7 @@ class Sistema {
   string list_participants();
   string list_channels();
   string create_channel(const string nome, const string tipo);
-  string enter_channel(const string nome);
+  string enter_channel(const string nome, const string tipo);
   string leave_channel();
   string send_message(const string mensagem);
   string list_messages();
