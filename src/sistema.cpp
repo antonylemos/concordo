@@ -34,7 +34,6 @@ string Sistema::create_user (const string email, const string senha, const strin
 string Sistema::login(const string email, const string senha) {
   if (!usuarioLogadoId) {
     for (int i = 0; i < usuarios.size(); i++) {
-      cout << usuarios[i].getEmail() << " - " << usuarios[i].getSenha() << endl;
       if (usuarios[i].getEmail() == email && usuarios[i].getSenha() == senha) {
         usuarioLogadoId = usuarios[i].getId();
 
