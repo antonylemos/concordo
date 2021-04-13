@@ -365,7 +365,7 @@ string Sistema::leave_channel() {
 
   nomeCanalConectado = "";
 
-  return "Saindo do servidor \'" + nomeCanal + "\'.";
+  return "Saindo do canal \'" + nomeCanal + "\'.";
 }
 
 string Sistema::send_message(const string mensagem) {
