@@ -9,14 +9,20 @@
 using namespace std;
 
 class CanalVoz : public Canal {
+  // Atributos da classe
   private:
     Mensagem ultimaMensagem;
 
+  // Métodos da classe
   public:
+    // Construtor
     CanalVoz();
+    // Construtor sobrecarregado
     CanalVoz(string const nome);
 
+    // Retorna um vetor de mensagens
     vector<Mensagem> getMensagens() const;
+    // Adiciona mensagem ao vetor de mensagens
     virtual void sendMensagem(const Mensagem mensagem);
 };
 
