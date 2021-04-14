@@ -30,7 +30,7 @@ concordo: objects src/concordo.cpp
 	g++ -Wall -fsanitize=address sistema.o executor.o usuario.o mensagem.o canal.o canalTexto.o canalVoz.o servidor.o src/concordo.cpp -o concordo
 
 clean:
-	rm *.o concordo
+	rm *.o usuarios.txt concordo
 
 all: concordo
 

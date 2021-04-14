@@ -2,6 +2,7 @@
 #include <sstream>
 #include <algorithm>
 #include <time.h>
+#include <fstream>
 
 #include "../include/sistema.hpp"
 
@@ -16,6 +17,7 @@ Sistema::Sistema() {
 Sistema::~Sistema() {}
 
 string Sistema::quit() {
+  salvar();
   return "Saindo...";
 }
 
@@ -418,6 +420,30 @@ string Sistema::list_messages() {
     mensagens += usuarios[itMensagem->getEnviadaPor() - 1].getNome() + " <" + itMensagem->getDataHora() + ">: " + itMensagem->getConteudo() + "\n";
 
   return mensagens;
+}
+
+void Sistema::salvarUsuarios() {
+  ofstream file("usuarios.txt");
+
+  file << usuarios.size();
+  file << "\n";
+
+  for (int i = 0; i < usuarios.size(); i++) {
+    file << usuarios[i].getId();
+    file << "\n";
+    file << usuarios[i].getNome();
+    file << "\n";
+    file << usuarios[i].getEmail();
+    file << "\n";
+    file << usuarios[i].getSenha();
+    file << "\n";
+  }
+
+  file.close();
+}
+
+void Sistema::salvar() {
+  salvarUsuarios();
 }
 
 
