@@ -497,8 +497,3 @@ void Sistema::salvar() {
   salvarUsuarios();
   salvarServidores();
 }
-
-
-
-
-/* IMPLEMENTAR MÉTODOS PARA OS COMANDOS RESTANTES */
