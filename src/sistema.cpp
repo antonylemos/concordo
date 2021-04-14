@@ -24,6 +24,8 @@ string Sistema::quit() {
 string Sistema::create_user (const string email, const string senha, const string nome) {
   if (usuarioLogadoId) return "Não foi possível realizar o cadastro.\nO usuário " + usuarios[usuarioLogadoId - 1].getEmail() + " encontra-se logado!";
 
+  if (email.empty() && senha.empty() && nome.empty()) return "Preencha todos os campos para cadastrar um usuário";
+
   for (int i = 0; i < usuarios.size(); i++) {
     if (usuarios[i].getEmail() == email) return "Usuário já existe.";
   }
