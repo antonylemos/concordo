@@ -85,6 +85,10 @@ vector<string> Servidor::getCanaisVoz() const {
   return listaCanais;
 }
 
+vector <shared_ptr <Canal>> Servidor::getCanais() const {
+  return canais;
+}
+
 bool Servidor::createCanal(shared_ptr <Canal> canal) {
   if (canal == nullptr) return false;
 
