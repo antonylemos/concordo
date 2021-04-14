@@ -19,6 +19,7 @@ class Sistema {
     string nomeCanalConectado;
 
     void salvarUsuarios();
+    void salvarServidores();
 
   public:
     Sistema();

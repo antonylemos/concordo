@@ -294,7 +294,7 @@ string Sistema::create_channel(const string nome, const string tipo) {
 
     if (findCanal != canaisTexto.end()) return "Canal de texto \'" + nome + "\' já existe.";
 
-    shared_ptr <CanalTexto> newCanal(new CanalTexto(nome));
+    shared_ptr <CanalTexto> newCanal(new CanalTexto(nome, tipo));
 
     bool canalCriado = findServidor->createCanal(newCanal);
 
@@ -310,7 +310,7 @@ string Sistema::create_channel(const string nome, const string tipo) {
 
     if (findCanal != canaisVoz.end()) return "Canal de voz \'" + nome + "\' já existe.";
 
-    shared_ptr <CanalVoz> newCanal(new CanalVoz(nome));
+    shared_ptr <CanalVoz> newCanal(new CanalVoz(nome, tipo));
 
     bool canalCriado = findServidor->createCanal(newCanal);
 
@@ -442,8 +442,58 @@ void Sistema::salvarUsuarios() {
   file.close();
 }
 
+void Sistema::salvarServidores() {
+  ofstream file("servidores.txt");
+
+  file << servidores.size();
+  file << "\n";
+
+  for (int itServidores = 0; itServidores < servidores.size(); itServidores++) {
+    file << servidores[itServidores].getUsuarioDonoId();
+    file << "\n";
+    file << servidores[itServidores].getNome();
+    file << "\n";
+    file << servidores[itServidores].getDescricao();
+    file << "\n";
+    file << servidores[itServidores].getCodigoConvite();
+    file << "\n";
+
+    file << servidores[itServidores].getParticipantesIds().size();
+    file << "\n";
+
+    for (int itParticipante = 0; itParticipante < servidores[itServidores].getParticipantesIds().size(); itParticipante++) {
+      file << servidores[itServidores].getParticipantesIds()[itParticipante];
+      file << "\n";
+    }
+
+    file << (servidores[itServidores].getCanais().size());
+    file << "\n";
+
+    for (int itCanal = 0; itCanal < servidores[itServidores].getCanais().size(); itCanal++) {
+      file << servidores[itServidores].getCanais()[itCanal]->getNome();
+      file << "\n";
+      file << servidores[itServidores].getCanais()[itCanal]->getTipo();
+      file << "\n";
+      file << servidores[itServidores].getCanais()[itCanal]->getMensagens().size();
+      file << "\n";
+
+      for (int itMensagens = 0; itMensagens < servidores[itServidores].getCanais()[itCanal]->getMensagens().size(); itMensagens++) {
+        file << servidores[itServidores].getCanais()[itCanal]->getMensagens()[itMensagens].getEnviadaPor();
+        file << "\n";
+        file << servidores[itServidores].getCanais()[itCanal]->getMensagens()[itMensagens].getDataHora();
+        file << "\n";
+        file << servidores[itServidores].getCanais()[itCanal]->getMensagens()[itMensagens].getConteudo();
+        file << "\n";
+      }
+    }
+  }
+
+  file.close();
+}
+
 void Sistema::salvar() {
   salvarUsuarios();
+  salvarServidores();
 }
 
 
