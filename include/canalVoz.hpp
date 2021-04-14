@@ -18,7 +18,7 @@ class CanalVoz : public Canal {
     // Construtor
     CanalVoz();
     // Construtor sobrecarregado
-    CanalVoz(string const nome);
+    CanalVoz(string const nome, string const tipo);
 
     // Retorna um vetor de mensagens
     vector<Mensagem> getMensagens() const;

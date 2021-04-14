@@ -11,13 +11,14 @@ class Canal {
   // Atributos da classe
   protected:
     string nome;
+    string tipo;
 
   // Métodos da classe
   public:
     // Construtor
     Canal();
     // Construtor sobrecarregado
-    Canal(string const nome);
+    Canal(string const nome, string const tipo);
     // Destrutor
     ~Canal();
 
@@ -25,6 +26,10 @@ class Canal {
     virtual string getNome() const;
     // Altera o nome do canal
     virtual void setNome(string const nome);
+    // Retorna o tipo do canal
+    virtual string getTipo() const;
+    // Altera o tipo do canal
+    virtual void setTipo(string const tipo);
 
     // Retorna um vetor de mensagens
     virtual vector<Mensagem> getMensagens() const = 0;

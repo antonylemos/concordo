@@ -8,7 +8,7 @@ using namespace std;
 
 CanalVoz::CanalVoz() {}
 
-CanalVoz::CanalVoz(string const nome) : Canal(nome) {}
+CanalVoz::CanalVoz(string const nome, string const tipo) : Canal(nome, tipo) {}
 
 vector<Mensagem> CanalVoz::getMensagens() const {
   vector<Mensagem> mensagens;
