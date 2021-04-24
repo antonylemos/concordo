@@ -56,7 +56,7 @@ class Servidor {
     vector<string> getCanaisTexto() const;
     // Retorna os canais de voz do servidor
     vector<string> getCanaisVoz() const;
-
+    // Retorna os canais presentes no servidor
     vector <shared_ptr <Canal>> getCanais() const;
 
     // Cria um canal no servidor

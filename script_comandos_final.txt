@@ -1,0 +1,29 @@
+create-user renan@imd.ufrn.br senha Renan
+create-user julio@imd.ufrn.br senha Júlio
+create-user isaac@imd.ufrn.br senha Isaac
+login renan@imd.ufrn.br senha
+create-server IMD
+set-server-desc IMD Descrição do servidor do IMD
+create-server UFRN
+set-server-desc UFRN Descrição do servidor da UFRN
+enter-server IMD
+create-channel geral texto
+create-channel fale-com-o-professor voz
+enter-channel geral texto
+send-message oi
+enter-channel fale-com-o-professor voz
+send-message alguém aí?
+disconnect
+login julio@imd.ufrn.br senha
+enter-server IMD
+enter-channel geral texto
+send-message olá
+disconnect
+login isaac@imd.ufrn.br senha
+enter-server UFRN
+create-channel informativos texto
+enter-channel informativos texto
+send-message aulas remotas #ativar
+send-message aulas remotas #continuar
+quit
+create-user naodeveprocessar@imd.ufrn.br naodevechegaraqui Não deve chegar aqui

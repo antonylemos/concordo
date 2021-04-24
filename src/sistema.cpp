@@ -20,6 +20,12 @@ string Sistema::quit() {
   return "Saindo...";
 }
 
+/**
+ * Cria um novo usuário.
+ * @param email
+ * @param senha
+ * @param nome
+*/
 string Sistema::create_user (const string email, const string senha, const string nome) {
   carregar();
 
@@ -39,6 +45,11 @@ string Sistema::create_user (const string email, const string senha, const strin
   return "Usuário criado!";
 }
 
+/**
+ * Conecta um usuário.
+ * @param email
+ * @param senha
+*/
 string Sistema::login(const string email, const string senha) {
   carregar();
 
@@ -57,6 +68,9 @@ string Sistema::login(const string email, const string senha) {
   return "Não foi possível realizar o login.\nO usuário " + usuarios[usuarioLogadoId - 1].getEmail() + " encontra-se logado!";
 }
 
+/**
+ * Desconecta um usuário
+*/
 string Sistema::disconnect() {
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
@@ -66,6 +80,10 @@ string Sistema::disconnect() {
   return "Desconectando usuário " + usuarios[usuarioLogadoIdAnterior - 1].getEmail() + ".";
 }
 
+/**
+ * Cria um novo servidor.
+ * @param nome
+*/
 string Sistema::create_server(const string nome) {
   carregar();
 
@@ -89,6 +107,11 @@ string Sistema::create_server(const string nome) {
   return "Servidor criado.";
 }
 
+/**
+ * Altera a descrição de um servidor.
+ * @param nome
+ * @param descricao
+*/
 string Sistema::set_server_desc(const string nome, const string descricao) {
   carregar();
 
@@ -116,6 +139,11 @@ string Sistema::set_server_desc(const string nome, const string descricao) {
   return "Descrição do servidor \'" + nome + "\' modificada.";
 }
 
+/**
+ * Altera o código de convite de um servidor.
+ * @param nome
+ * @param codigo
+*/
 string Sistema::set_server_invite_code(const string nome, const string codigo) {
   carregar();
 
@@ -144,6 +172,10 @@ string Sistema::set_server_invite_code(const string nome, const string codigo) {
   else return "Código de convite do servidor \'" + nome + "\' removido.";
 }
 
+/**
+ * Lista servidores.
+ * @return Lista de servidores
+*/
 string Sistema::list_servers() {
   carregar();
 
@@ -160,6 +192,10 @@ string Sistema::list_servers() {
   return listaServidores;
 }
 
+/**
+ * Remove um servidor.
+ * @param nome
+*/
 string Sistema::remove_server(const string nome) {
   carregar();
 
@@ -185,6 +221,11 @@ string Sistema::remove_server(const string nome) {
   return "Servidor \'" + nome + "\' removido.";
 }
 
+/**
+ * Entra em um servidor.
+ * @param nome
+ * @param codigo
+*/
 string Sistema::enter_server(const string nome, const string codigo) {
   carregar();
 
@@ -224,6 +265,9 @@ string Sistema::enter_server(const string nome, const string codigo) {
   }
 }
 
+/**
+ * Sai de um servidor.
+*/
 string Sistema::leave_server() {
   carregar();
 
@@ -238,6 +282,10 @@ string Sistema::leave_server() {
   return "Saindo do servidor \'" + nomeServidor + "\'.";
 }
 
+/**
+ * Lista participantes de um servidor.
+ * @return Lista de participantes
+*/
 string Sistema::list_participants() {
   carregar();
 
@@ -267,6 +315,10 @@ string Sistema::list_participants() {
   return listaParticipantes;
 }
 
+/**
+ * Lista canais de um servidor.
+ * @return Lista de canais
+*/
 string Sistema::list_channels() {
   carregar();
 
@@ -306,6 +358,11 @@ string Sistema::list_channels() {
   return canais;
 }
 
+/**
+ * Cria um novo canal em um servidor.
+ * @param nome
+ * @param tipo
+*/
 string Sistema::create_channel(const string nome, const string tipo) {
   carregar();
 
@@ -362,6 +419,11 @@ string Sistema::create_channel(const string nome, const string tipo) {
   }
 }
 
+/**
+ * Entra em um canal.
+ * @param nome
+ * @param tipo
+*/
 string Sistema::enter_channel(const string nome, const string tipo) {
   carregar();
 
@@ -400,6 +462,9 @@ string Sistema::enter_channel(const string nome, const string tipo) {
   }
 }
 
+/**
+ * Sai de um canal.
+*/
 string Sistema::leave_channel() {
   carregar();
 
@@ -416,6 +481,10 @@ string Sistema::leave_channel() {
   return "Saindo do canal \'" + nomeCanal + "\'.";
 }
 
+/**
+ * Envia mensagem em um canal.
+ * @param mensagem
+*/
 string Sistema::send_message(const string mensagem) {
   carregar();
 
@@ -447,6 +516,10 @@ string Sistema::send_message(const string mensagem) {
   return "Mensagem enviada.";
 }
 
+/**
+ * Lista as mensagens de um canal.
+ * @return Lista de mensagens
+*/
 string Sistema::list_messages() {
   carregar();
 
@@ -474,6 +547,9 @@ string Sistema::list_messages() {
   return mensagens;
 }
 
+/**
+ * @private Salva usuários em um arquivo de texto.
+*/
 void Sistema::salvarUsuarios() {
   ofstream file("usuarios.txt");
 
@@ -494,6 +570,9 @@ void Sistema::salvarUsuarios() {
   file.close();
 }
 
+/**
+ * @private Salva servidores em um arquivo de texto.
+*/
 void Sistema::salvarServidores() {
   ofstream file("servidores.txt");
 
@@ -534,6 +613,9 @@ void Sistema::salvarServidores() {
   file.close();
 }
 
+/**
+ * @private Carrega usuários de um arquivo de texto.
+*/
 void Sistema::carregarUsuarios() {
   ifstream file("usuarios.txt");
 
@@ -571,6 +653,9 @@ void Sistema::carregarUsuarios() {
   file.close();
 }
 
+/**
+ * @private Carrega servidores de um arquivo de texto.
+*/
 void Sistema::carregarServidores() {
   ifstream file("servidores.txt");
 
@@ -660,11 +745,17 @@ void Sistema::carregarServidores() {
   file.close();
 }
 
+/**
+ * Salva dados da aplicação.
+*/
 void Sistema::salvar() {
   salvarUsuarios();
   salvarServidores();
 }
 
+/**
+ * Carrega dados da aplicação.
+*/
 void Sistema::carregar() {
   int fileSize = 0;
 
