@@ -22,6 +22,7 @@ class Sistema {
     void salvarServidores();
 
     void carregarUsuarios();
+    void carregarServidores();
 
   public:
     Sistema();

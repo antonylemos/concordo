@@ -521,6 +521,95 @@ void Sistema::carregarUsuarios() {
   file.close();
 }
 
+void Sistema::carregarServidores() {
+  ifstream file("servidores.txt");
+
+  if (!file) {
+    cout << "Não foi possível abrir o arquivo." << endl;
+    exit(1);
+  }
+
+  string size, id, nome, descricao, codigoConvite, nomeCanal, tipoCanal, data, texto;
+  int sizeServidores, sizeUsuarios, sizeCanais, sizeMensagens;
+
+  servidores.clear();
+
+  file >> size;
+  sizeServidores = stoi(size);
+
+  file.ignore();
+
+  for (int itServidores = 0; itServidores < sizeServidores; itServidores ++) {
+    getline(file, id);
+    getline(file, nome);
+    getline(file, descricao);
+    getline(file, codigoConvite);
+
+    int servidorId = stoi(id);
+
+    Servidor newServidor(servidorId, nome);
+    newServidor.setDescricao(descricao);
+    if (codigoConvite.empty()) newServidor.setCodigoConvite("");
+    else newServidor.setCodigoConvite(codigoConvite);
+
+    getline(file, size);
+    sizeUsuarios = stoi(size);
+
+    for (int itUsuarios = 0; itUsuarios < sizeUsuarios; itUsuarios++) {
+      getline(file, id);
+      newServidor.pushParticipante(stoi(id));
+    }
+
+    getline(file, size);
+    sizeCanais = stoi(size);
+
+    for (int itCanais = 0; itCanais < sizeCanais; itCanais++) {
+      getline(file, nomeCanal);
+      getline(file, tipoCanal);
+
+      shared_ptr <Canal> newCanal;
+
+      if (tipoCanal == "texto") {
+        shared_ptr <CanalTexto> newCanal(new CanalTexto(nomeCanal, tipoCanal));
+
+        getline(file, size);
+        sizeMensagens = stoi(size);
+
+        for (int itMensagens = 0; itMensagens < sizeMensagens; itMensagens++) {
+          getline(file, id);
+          getline(file, data);
+          getline(file, texto);
+
+          Mensagem newMensagem(data, texto, stoi(id));
+          newCanal->sendMensagem(newMensagem);
+        }
+
+        newServidor.createCanal(newCanal);
+      } else {
+        shared_ptr <CanalVoz> newCanal(new CanalVoz(nomeCanal, tipoCanal));
+
+        getline(file, size);
+        sizeMensagens = stoi(size);
+
+        for (int itMensagens = 0; itMensagens < sizeMensagens; itMensagens++) {
+          getline(file, id);
+          getline(file, data);
+          getline(file, texto);
+
+          Mensagem newMensagem(data, texto, stoi(id));
+          newCanal->sendMensagem(newMensagem);
+        }
+
+        newServidor.createCanal(newCanal);
+      }
+    }
+
+    servidores.push_back(newServidor);
+  }
+
+  file.close();
+}
+
 void Sistema::salvar() {
   salvarUsuarios();
   salvarServidores();
