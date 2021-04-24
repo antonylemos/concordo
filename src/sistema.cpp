@@ -666,6 +666,26 @@ void Sistema::salvar() {
 }
 
 void Sistema::carregar() {
-  carregarUsuarios();
-  carregarServidores();
+  int fileSize = 0;
+
+  ifstream usuarioFile("usuarios.txt");
+  ifstream servidorFile("servidores.txt");
+
+  if (usuarioFile) {
+    usuarioFile.seekg(0, ios::end);
+    fileSize = usuarioFile.tellg();
+
+    if (fileSize > 0) carregarUsuarios();
+
+    usuarioFile.close();
+  }
+
+  if (servidorFile) {
+    servidorFile.seekg(0, ios::end);
+    fileSize = servidorFile.tellg();
+
+    if (fileSize > 0) carregarServidores();
+
+    servidorFile.close();
+  }
 }
