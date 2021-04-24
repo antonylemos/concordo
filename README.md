@@ -46,7 +46,10 @@ Você pode rodar o sistema e em logo depois digitar os comandos seguidos de _ENT
 
 Ou pode criar um arquivo de texto com uma lista de comandos (um por linha) e executar o sistema redirecionando esse arquivo como entrada padrão:
 ```bash
+# Primeira parte
 ./concordo < script_comandos.txt
+# Segunda parte
+./concordo < script_comandos_final.txt
 ```
 
 ## 📌 Comandos do sistema
