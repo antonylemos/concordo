@@ -17,11 +17,12 @@ Sistema::Sistema() {
 Sistema::~Sistema() {}
 
 string Sistema::quit() {
-  salvar();
   return "Saindo...";
 }
 
 string Sistema::create_user (const string email, const string senha, const string nome) {
+  carregar();
+
   if (usuarioLogadoId) return "Não foi possível realizar o cadastro.\nO usuário " + usuarios[usuarioLogadoId - 1].getEmail() + " encontra-se logado!";
 
   if (email.empty() && senha.empty() && nome.empty()) return "Preencha todos os campos para cadastrar um usuário";
@@ -33,10 +34,14 @@ string Sistema::create_user (const string email, const string senha, const strin
   Usuario newUsuario((int)(usuarios.size() + 1), email, senha, nome);
   usuarios.push_back(newUsuario);
 
+  salvar();
+
   return "Usuário criado!";
 }
 
 string Sistema::login(const string email, const string senha) {
+  carregar();
+
   if (!usuarioLogadoId) {
     for (int i = 0; i < usuarios.size(); i++) {
       if (usuarios[i].getEmail() == email && usuarios[i].getSenha() == senha) {
@@ -62,6 +67,8 @@ string Sistema::disconnect() {
 }
 
 string Sistema::create_server(const string nome) {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   if (nome.empty()) return "Não é possível criar um servidor sem nome.";
@@ -77,10 +84,14 @@ string Sistema::create_server(const string nome) {
 
   nomeServidorConectado = nome;
 
+  salvar();
+
   return "Servidor criado.";
 }
 
 string Sistema::set_server_desc(const string nome, const string descricao) {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   Servidor findServidor;
@@ -100,10 +111,14 @@ string Sistema::set_server_desc(const string nome, const string descricao) {
 
   findServidor.setDescricao(descricao);
 
+  salvar();
+
   return "Descrição do servidor \'" + nome + "\' modificada.";
 }
 
 string Sistema::set_server_invite_code(const string nome, const string codigo) {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   Servidor findServidor;
@@ -123,11 +138,15 @@ string Sistema::set_server_invite_code(const string nome, const string codigo) {
 
   findServidor.setCodigoConvite(codigo);
 
+  salvar();
+
   if (!codigo.empty()) return "Código de convite do servidor \'" + nome + "\' modificado.";
   else return "Código de convite do servidor \'" + nome + "\' removido.";
 }
 
 string Sistema::list_servers() {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   if (servidores.empty()) return "Não há servidores cadastrados.";
@@ -142,6 +161,8 @@ string Sistema::list_servers() {
 }
 
 string Sistema::remove_server(const string nome) {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   vector<Servidor>::iterator findServidor;
@@ -159,10 +180,14 @@ string Sistema::remove_server(const string nome) {
 
   servidores.erase(findServidor);
 
+  salvar();
+
   return "Servidor \'" + nome + "\' removido.";
 }
 
 string Sistema::enter_server(const string nome, const string codigo) {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   Servidor findServidor;
@@ -179,14 +204,17 @@ string Sistema::enter_server(const string nome, const string codigo) {
 
   if (findServidor.getUsuarioDonoId() == usuarioLogadoId) {
     findServidor.pushParticipante(usuarioLogadoId);
+    salvar();
     nomeServidorConectado = nome;
     return "Entrou no servidor com sucesso.";
   } else if (findServidor.getCodigoConvite().empty()) {
     findServidor.pushParticipante(usuarioLogadoId);
+    salvar();
     nomeServidorConectado = nome;
     return "Entrou no servidor com sucesso.";
   } else if (findServidor.getCodigoConvite() == codigo) {
     findServidor.pushParticipante(usuarioLogadoId);
+    salvar();
     nomeServidorConectado = nome;
     return "Entrou no servidor com sucesso.";
   } else if (!findServidor.getCodigoConvite().empty() && codigo.empty()) {
@@ -197,6 +225,8 @@ string Sistema::enter_server(const string nome, const string codigo) {
 }
 
 string Sistema::leave_server() {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   if (nomeServidorConectado.empty()) return "O usuário não está conectado a nenhum servidor.";
@@ -209,6 +239,8 @@ string Sistema::leave_server() {
 }
 
 string Sistema::list_participants() {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   if (nomeServidorConectado.empty()) return "Não há um servidor conectado no momento.";
@@ -236,6 +268,8 @@ string Sistema::list_participants() {
 }
 
 string Sistema::list_channels() {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
@@ -273,6 +307,8 @@ string Sistema::list_channels() {
 }
 
 string Sistema::create_channel(const string nome, const string tipo) {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
@@ -300,6 +336,8 @@ string Sistema::create_channel(const string nome, const string tipo) {
 
     bool canalCriado = findServidor->createCanal(newCanal);
 
+    salvar();
+
     if (canalCriado) return "Canal de texto \'" + nome + "\' criado.";
 
     return "Erro ao criar canal de texto.";
@@ -316,6 +354,8 @@ string Sistema::create_channel(const string nome, const string tipo) {
 
     bool canalCriado = findServidor->createCanal(newCanal);
 
+    salvar();
+
     if (canalCriado) return "Canal de voz \'" + nome + "\' criado.";
 
     return "Erro ao criar canal de voz.";
@@ -323,6 +363,8 @@ string Sistema::create_channel(const string nome, const string tipo) {
 }
 
 string Sistema::enter_channel(const string nome, const string tipo) {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
@@ -359,6 +401,8 @@ string Sistema::enter_channel(const string nome, const string tipo) {
 }
 
 string Sistema::leave_channel() {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
@@ -373,6 +417,8 @@ string Sistema::leave_channel() {
 }
 
 string Sistema::send_message(const string mensagem) {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
@@ -396,10 +442,14 @@ string Sistema::send_message(const string mensagem) {
 
   findServidor->sendMensagem(nomeCanalConectado, newMensagem);
 
+  salvar();
+
   return "Mensagem enviada.";
 }
 
 string Sistema::list_messages() {
+  carregar();
+
   if (!usuarioLogadoId) return "Não há um usuário conectado no momento.";
 
   if (nomeServidorConectado.empty()) return "O usuário não está conectado a um servidor no momento.";
@@ -617,4 +667,5 @@ void Sistema::salvar() {
 
 void Sistema::carregar() {
   carregarUsuarios();
+  carregarServidores();
 }
