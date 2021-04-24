@@ -484,7 +484,48 @@ void Sistema::salvarServidores() {
   file.close();
 }
 
+void Sistema::carregarUsuarios() {
+  ifstream file("usuarios.txt");
+
+  if (!file) {
+    cout << "Não foi possível abrir o arquivo." << endl;
+    exit(1);
+  }
+
+  string size, id, nome, email, senha;
+  int sizeUsuarios;
+
+  file >> size;
+  sizeUsuarios = stoi(size);
+
+  file.ignore();
+
+  for (int itUsuarios = 0; itUsuarios < sizeUsuarios; itUsuarios++) {
+    getline(file, id);
+    getline(file, nome);
+    getline(file, email);
+    getline(file, senha);
+
+    int usuarioId = stoi(id);
+
+    auto findUsuario = find_if(usuarios.begin(), usuarios.end(), [usuarioId](Usuario usuario) {
+      return usuarioId == usuario.getId();
+    });
+
+    if (findUsuario == usuarios.end()) {
+      Usuario newUsuario(usuarioId, nome, email, senha);
+      usuarios.push_back(newUsuario);
+    }
+  }
+
+  file.close();
+}
+
 void Sistema::salvar() {
   salvarUsuarios();
   salvarServidores();
+}
+
+void Sistema::carregar() {
+  carregarUsuarios();
 }

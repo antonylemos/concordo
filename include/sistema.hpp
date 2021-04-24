@@ -21,6 +21,8 @@ class Sistema {
     void salvarUsuarios();
     void salvarServidores();
 
+    void carregarUsuarios();
+
   public:
     Sistema();
     ~Sistema();
@@ -45,6 +47,7 @@ class Sistema {
     string list_messages();
 
     void salvar();
+    void carregar();
 };
 
 #endif
