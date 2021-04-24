@@ -427,18 +427,18 @@ string Sistema::list_messages() {
 void Sistema::salvarUsuarios() {
   ofstream file("usuarios.txt");
 
-  file << usuarios.size();
-  file << "\n";
+  if (!file) {
+    cerr << "Houve um problema ao criar o arquivo." << endl;
+    exit(1);
+  }
+
+  file << usuarios.size() << endl;
 
   for (int i = 0; i < usuarios.size(); i++) {
-    file << usuarios[i].getId();
-    file << "\n";
-    file << usuarios[i].getNome();
-    file << "\n";
-    file << usuarios[i].getEmail();
-    file << "\n";
-    file << usuarios[i].getSenha();
-    file << "\n";
+    file << usuarios[i].getId() << endl;
+    file << usuarios[i].getNome() << endl;
+    file << usuarios[i].getEmail() << endl;
+    file << usuarios[i].getSenha() << endl;
   }
 
   file.close();
@@ -447,45 +447,36 @@ void Sistema::salvarUsuarios() {
 void Sistema::salvarServidores() {
   ofstream file("servidores.txt");
 
-  file << servidores.size();
-  file << "\n";
+  if (!file) {
+    cerr << "Houve um problema ao criar o arquivo." << endl;
+    exit(1);
+  }
+
+  file << servidores.size() << endl;
 
   for (int itServidores = 0; itServidores < servidores.size(); itServidores++) {
-    file << servidores[itServidores].getUsuarioDonoId();
-    file << "\n";
-    file << servidores[itServidores].getNome();
-    file << "\n";
-    file << servidores[itServidores].getDescricao();
-    file << "\n";
-    file << servidores[itServidores].getCodigoConvite();
-    file << "\n";
+    file << servidores[itServidores].getUsuarioDonoId() << endl;
+    file << servidores[itServidores].getNome() << endl;
+    file << servidores[itServidores].getDescricao() << endl;
+    file << servidores[itServidores].getCodigoConvite() << endl;
 
-    file << servidores[itServidores].getParticipantesIds().size();
-    file << "\n";
+    file << servidores[itServidores].getParticipantesIds().size() << endl;
 
     for (int itParticipante = 0; itParticipante < servidores[itServidores].getParticipantesIds().size(); itParticipante++) {
-      file << servidores[itServidores].getParticipantesIds()[itParticipante];
-      file << "\n";
+      file << servidores[itServidores].getParticipantesIds()[itParticipante] << endl;
     }
 
-    file << (servidores[itServidores].getCanais().size());
-    file << "\n";
+    file << (servidores[itServidores].getCanais().size()) << endl;
 
     for (int itCanal = 0; itCanal < servidores[itServidores].getCanais().size(); itCanal++) {
-      file << servidores[itServidores].getCanais()[itCanal]->getNome();
-      file << "\n";
-      file << servidores[itServidores].getCanais()[itCanal]->getTipo();
-      file << "\n";
-      file << servidores[itServidores].getCanais()[itCanal]->getMensagens().size();
-      file << "\n";
+      file << servidores[itServidores].getCanais()[itCanal]->getNome() << endl;
+      file << servidores[itServidores].getCanais()[itCanal]->getTipo() << endl;
+      file << servidores[itServidores].getCanais()[itCanal]->getMensagens().size() << endl;
 
       for (int itMensagens = 0; itMensagens < servidores[itServidores].getCanais()[itCanal]->getMensagens().size(); itMensagens++) {
-        file << servidores[itServidores].getCanais()[itCanal]->getMensagens()[itMensagens].getEnviadaPor();
-        file << "\n";
-        file << servidores[itServidores].getCanais()[itCanal]->getMensagens()[itMensagens].getDataHora();
-        file << "\n";
-        file << servidores[itServidores].getCanais()[itCanal]->getMensagens()[itMensagens].getConteudo();
-        file << "\n";
+        file << servidores[itServidores].getCanais()[itCanal]->getMensagens()[itMensagens].getEnviadaPor() << endl;
+        file << servidores[itServidores].getCanais()[itCanal]->getMensagens()[itMensagens].getDataHora() << endl;
+        file << servidores[itServidores].getCanais()[itCanal]->getMensagens()[itMensagens].getConteudo() << endl;
       }
     }
   }
